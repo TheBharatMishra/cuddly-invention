@@ -10,7 +10,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector("#iamback"),
+  canvas: document.querySelector("#iamback")!,
 });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -36,12 +36,13 @@ scene.add(torus);
 // Adding Light
 
 // const pointLight = new THREE.PointLight(0xff3ff);
-const pointLight = new THREE.AmbientLight(0xffffff);
+const pointLight = new THREE.AmbientLight(0xffffff, 0.5);
 pointLight.position.set(5, 5, 5);
 scene.add(pointLight);
 
 // Light Helper
-const lightHelper = new THREE.PointLightHelper(pointLight);
+// const lightHelper = new THREE.PointLightHelper(pointLight);
+
 // Grid Helper
 const gridHelper = new THREE.GridHelper(200, 50);
 
@@ -55,14 +56,14 @@ function addStar() {
   const star = new THREE.Mesh(geometry, material);
 
   const [x, y, z] = Array(3)
-    .fill()
+    .fill(0)
     .map(() => THREE.MathUtils.randFloatSpread(100));
   star.position.set(x, y, z);
   scene.add(star);
 }
 
 // Adding Stars
-Array(200).fill().forEach(addStar);
+Array(200).fill(0).forEach(addStar);
 
 // Loading Textures
 const spaceTexture = new THREE.TextureLoader().load("space.png");
@@ -91,7 +92,10 @@ const moon = new THREE.Mesh(
 );
 scene.add(moon);
 
-scene.add(lightHelper, gridHelper);
+scene.add(
+  // lightHelper,
+  gridHelper
+);
 
 camera.position.z = 25;
 
@@ -119,7 +123,7 @@ function animate() {
   moon.position.z = 30;
   moon.position.setX(-10);
   // setTimeout(() => {
-  //   tyson.position.x += 0.05;
+  tyson.position.x += 0.01;
   // }, 5000);
 
   torus.rotation.x += 0.01;
